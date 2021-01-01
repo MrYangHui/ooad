@@ -1,5 +1,6 @@
 package bean;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -8,13 +9,31 @@ import java.util.Map;
  * @time: 20:16
  */
 public class Report {
-    Map<Product, Integer> checkResult;
+    private Product product;
+    private int result;
+    private Date checkTime;
 
-    public Map<Product, Integer> getCheckResult() {
-        return checkResult;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setCheckResult(Map<Product, Integer> checkResult) {
-        this.checkResult = checkResult;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public Date getCheckTime() {
+        return checkTime;
+    }
+
+    public void setCheckTime(Date checkTime) {
+        this.checkTime = checkTime;
     }
 }
