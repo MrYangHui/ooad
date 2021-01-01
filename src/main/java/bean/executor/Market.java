@@ -28,4 +28,17 @@ public class Market implements IExecutor{
     public void executeTask() {
 
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Market){
+            return this.name.equals(((Market) obj).name);
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

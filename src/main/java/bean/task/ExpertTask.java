@@ -9,5 +9,17 @@ import bean.executor.Expert;
  */
 public class ExpertTask extends SuperviseTask{
     //专家抽检任务
-    Expert expert;
+    private Expert expert;
+
+    public Expert getExpert() {
+        return expert;
+    }
+
+    public void setExpert(Expert expert) {
+        this.expert = expert;
+    }
+
+    public ExpertTask(Expert expert) {
+        this.expert = expert;
+    }
 }
