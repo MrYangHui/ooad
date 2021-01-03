@@ -9,7 +9,7 @@ import bean.task.MarketTask;
  * @time: 22:43
  */
 public class Evaluation {
-    private MarketTask MarketTask;
+    private MarketTask marketTask;
     private IExecutor executor;
     private int score;
     private int status;   // 0 尚未评估， 1 按时完成， 2 未按时完成， 3 超过20天未完成
@@ -19,16 +19,16 @@ public class Evaluation {
     }
 
     public Evaluation(MarketTask marketTask, IExecutor executor){
-        this.MarketTask = marketTask;
+        this.marketTask = marketTask;
         this.executor = executor;
     }
 
     public MarketTask getMarketTask() {
-        return MarketTask;
+        return marketTask;
     }
 
     public void setMarketTask(MarketTask marketTask) {
-        this.MarketTask = marketTask;
+        this.marketTask = marketTask;
     }
 
     public IExecutor getExecutor() {
