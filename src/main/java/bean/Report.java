@@ -1,7 +1,6 @@
 package bean;
 
-import java.util.Date;
-import java.util.Map;
+import java.time.LocalDate;
 
 /**
  * @author: YXH
@@ -11,7 +10,7 @@ import java.util.Map;
 public class Report {
     private Product product;
     private int result;
-    private Date checkTime;
+    private LocalDate checkTime;
 
     public Product getProduct() {
         return product;
@@ -29,11 +28,11 @@ public class Report {
         this.result = result;
     }
 
-    public Date getCheckTime() {
+    public LocalDate getCheckTime() {
         return checkTime;
     }
 
-    public void setCheckTime(Date checkTime) {
+    public void setCheckTime(LocalDate checkTime) {
         this.checkTime = checkTime;
     }
 }

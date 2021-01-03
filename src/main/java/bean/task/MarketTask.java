@@ -4,7 +4,7 @@ import bean.Product;
 import bean.Report;
 import bean.executor.Market;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,18 +17,26 @@ public class MarketTask {
     private boolean isFinished = false;
     private Market market;
     private Map<Product, Report> reportMap;
-    private Date deadline;
+    private LocalDate deadline;
+    private LocalDate finishDate;
 
-    public Date getDeadline() {
+    public LocalDate getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(LocalDate finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
-    public MarketTask(boolean isFinished, Market market, Date deadline) {
-        this.isFinished = isFinished;
+    public MarketTask(Market market, LocalDate deadline) {
         this.market = market;
         this.deadline = deadline;
         reportMap = new HashMap<Product, Report>();
@@ -59,7 +67,9 @@ public class MarketTask {
     }
 
     public void update(){
-        if(!reportMap.containsValue(null))
+        if(!reportMap.containsValue(null)){
             isFinished = true;
+            finishDate = LocalDate.now();
+        }
     }
 }

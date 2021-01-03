@@ -3,7 +3,7 @@ package bean.task;
 import bean.executor.Market;
 import bean.Product;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,7 +18,15 @@ public class SuperviseTask {
     private List<Product> products;
 
     private String details;
-    private Date deadline;
+    private LocalDate deadline;
+
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
+    }
 
     private List<MarketTask> marketTasks;
 
@@ -44,14 +52,6 @@ public class SuperviseTask {
 
     public void setDetails(String details) {
         this.details = details;
-    }
-
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
     }
 
     public List<MarketTask> getMarketTasks() {

@@ -2,16 +2,15 @@ package service;
 
 import bean.Product;
 import bean.Report;
+import bean.executor.Expert;
 import bean.executor.IExecutor;
 import bean.executor.Market;
 import bean.task.ExpertTask;
 import bean.task.MarketTask;
 import bean.task.SuperviseTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * @author: YXH
@@ -26,9 +25,7 @@ public class ExecutorService {
     }
 
     private void addMarketTask(IExecutor executor, MarketTask marketTask){
-        if(marketListMap.get(executor) == null){
-            marketListMap.put(executor, new ArrayList<MarketTask>());
-        }
+        marketListMap.computeIfAbsent(executor, k -> new ArrayList<MarketTask>());
         marketListMap.get(executor).add(marketTask);
     }
 
@@ -50,13 +47,22 @@ public class ExecutorService {
         if(marketTasks == null)
             return;
         for(MarketTask marketTask : marketTasks){
+            if(executor instanceof Expert){
+                System.out.printf("专家抽检 专家: %s 农贸市场: %s 截止日期: %tF %s\n",
+                        executor.getName(), marketTask.getMarket().getName(),marketTask.getDeadline(),
+                        (marketTask.isFinished() ? "已完成" : "未完成"));
+            }else {
+                System.out.printf("自检任务  农贸市场: %s 截止日期: %tF %s\n",
+                        marketTask.getMarket().getName(),marketTask.getDeadline(),
+                        (marketTask.isFinished() ? "已完成" : "未完成"));
+            }
             Map<Product, Report> reportMap = marketTask.getReportMap();
             for(Map.Entry<Product, Report> entry : reportMap.entrySet()){
-                System.out.print(entry.getKey().getName()+" ");
+                System.out.print("-"+entry.getKey().getName());
                 if(entry.getValue() == null){
-                    System.out.println("未抽检");
+                    System.out.println(" 未抽检");
                 }else {
-                    System.out.println("不合格数:"+entry.getValue().getResult()+" 抽检时间:"+entry.getValue().getCheckTime());
+                    System.out.printf(" 不合格数: %d 抽检时间: %tF\n",entry.getValue().getResult(),entry.getValue().getCheckTime());
                 }
             }
         }
@@ -66,12 +72,15 @@ public class ExecutorService {
         if(marketTasks == null)
             return;
         for(MarketTask marketTask : marketTasks){
-            if(marketTask.getMarket() == market){
+            if(marketTask.getMarket().equals(market) && marketTask.getReportMap().containsKey(product)){
                 Report report = new Report();
                 report.setProduct(product);
                 report.setResult((int)(Math.random() * 10));
+                report.setCheckTime(LocalDate.now());
                 marketTask.getReportMap().put(product, report);
                 marketTask.update();
+                System.out.printf("%s 完成抽检 %s %s, 不合格数: %d\n",
+                        executor.getName(),market.getName(),product.getName(), report.getResult());
             }
         }
     }

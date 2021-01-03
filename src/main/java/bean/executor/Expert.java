@@ -9,6 +9,13 @@ public class Expert implements IExecutor{
     private int id;
     private String name;
 
+    public Expert(){
+
+    }
+    public Expert(String name){
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
@@ -27,5 +34,18 @@ public class Expert implements IExecutor{
 
     public void executeTask() {
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Expert){
+            return this.name.equals(((Expert) obj).name);
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

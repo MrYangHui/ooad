@@ -9,6 +9,13 @@ public class Market implements IExecutor{
     private int id;
     private String name;
 
+    public Market(){
+
+    }
+    public Market(String name){
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

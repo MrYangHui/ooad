@@ -7,4 +7,6 @@ package bean.executor;
  */
 public interface IExecutor {
     public void executeTask();
+
+    public String getName();
 }
