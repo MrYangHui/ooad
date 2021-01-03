@@ -21,6 +21,7 @@ public class IndicatorService {
     public void update(){
         List<Evaluation> evaluations = regulatorService.getEvaluations();
         LocalDate localDate = LocalDate.now();
+        System.out.printf("当前日期: %tF, 调用update()\n", localDate);
         for(Evaluation evaluation : evaluations){
             MarketTask marketTask = evaluation.getMarketTask();
             LocalDate deadline = marketTask.getDeadline();
@@ -40,7 +41,7 @@ public class IndicatorService {
             }
             if(localDate.isAfter(deadline.plusDays(20))){
                 if(!marketTask.isFinished()){
-                    evaluation.setScore(3);
+                    evaluation.setStatus(3);
                     evaluation.setScore(-20);
                 }
             }

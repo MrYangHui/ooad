@@ -29,6 +29,7 @@ public class TestCase {
     private IndicatorService indicatorService;
     private Market marketA;
     private Market marketB;
+    private Market marketC;
     private Product productA;
     private Product productB;
 
@@ -40,6 +41,7 @@ public class TestCase {
         executorService = new ExecutorService();
         marketA = new Market("农贸市场A");
         marketB = new Market("农贸市场B");
+        marketC = new Market("农贸市场C");
         productA = new Product("水产品");
         productB = new Product("禽肉产品");
     }
@@ -95,19 +97,38 @@ public class TestCase {
     }
 
     @Test
-    public void testGetScore(){
+    public void testCheckEvaluation(){
         System.out.println("测试用例: 验证专家和农贸市场按时完成和未按时完成的抽检的场景，获取评估总得分和评估得扣分的记录。");
-        System.out.println("测试用例: 监管局发起专家抽检,专家查看并完成。");
         regulatorService.startExpertTask(
-                new String[]{"农贸市场A", "农贸市场B"},
-                new String[]{"水产品", "禽肉产品"},
-                LocalDate.now(),
+                new String[]{"农贸市场A", "农贸市场B", "农贸市场C"},
+                new String[]{"水产品"},
+                LocalDate.now().plusDays(1),
                 "张三"
         );
         regulatorService.notifyExecutor(executorService);
         Expert expert = new Expert("张三");
         executorService.executeTask(expert, marketA, productA);
-        executorService.executeTask(expert, marketA, productB);
+        indicatorService.update();
+        regulatorService.checkEvaluation(expert);
+
+        LocalDate date1 = LocalDate.now().plusDays(2);
+        new MockUp<LocalDate>(LocalDate.class){
+            @Mock
+            public LocalDate now(){
+                return date1;
+            }
+        };
+        indicatorService.update();
+        regulatorService.checkEvaluation(expert);
+
+        executorService.executeTask(expert,marketB, productA);
+        LocalDate date2 = date1.plusDays(20);
+        new MockUp<LocalDate>(LocalDate.class){
+            @Mock
+            public LocalDate now(){
+                return date2;
+            }
+        };
         indicatorService.update();
         regulatorService.checkEvaluation(expert);
     }
@@ -116,7 +137,6 @@ public class TestCase {
     public void testOne() {
         LocalDate localDate = LocalDate.now().plusDays(20);
         new MockUp<LocalDate>(LocalDate.class){
-            //想mock哪个方法，就给哪个方法加上@Mock，没有@Mock的方法，不受影响
             @Mock
             public LocalDate now(){
                 return localDate;
@@ -124,7 +144,6 @@ public class TestCase {
         };
         System.out.printf("%tF\n", LocalDate.now());
         new MockUp<LocalDate>(LocalDate.class){
-            //想mock哪个方法，就给哪个方法加上@Mock，没有@Mock的方法，不受影响
             @Mock
             public LocalDate now(){
                 return localDate.plusDays(-10);

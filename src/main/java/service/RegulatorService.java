@@ -85,7 +85,7 @@ public class RegulatorService {
                 Report report = reportMap.get(product);
                 if(!report.getCheckTime().isBefore(startDate) && !report.getCheckTime().isAfter(endDate)){
                     total += report.getResult();
-                    System.out.printf("%s %d 抽检时间: %tF\n",
+                    System.out.printf("%s %d 抽检日期: %tF\n",
                             marketTask.getMarket().getName(), report.getResult(), report.getCheckTime());
                 }
             }
@@ -95,6 +95,7 @@ public class RegulatorService {
 
     public void checkEvaluation(IExecutor executor){
         int score = 0;
+        System.out.printf("%s 分数记录:\n", executor.getName());
         for(Evaluation evaluation : evaluations){
             if(!evaluation.getExecutor().equals(executor))
                 continue;
@@ -112,7 +113,7 @@ public class RegulatorService {
                 score += evaluation.getScore();
             }
         }
-        System.out.printf("%s 总得分: %d\n", executor.getName(), score);
+        System.out.printf("总得分: %d\n", score);
     }
 
     public List<Evaluation> getEvaluations() {
