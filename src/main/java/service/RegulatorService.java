@@ -105,11 +105,11 @@ public class RegulatorService {
                 score += evaluation.getScore();
             } else if(evaluation.getStatus() == 2){
                 System.out.printf("没有按时完成\"%s 截止日期: %tF\"监管任务, 扣%d分\n",
-                        evaluation.getMarketTask().getMarket().getName(), evaluation.getMarketTask().getDeadline(), evaluation.getScore());
+                        evaluation.getMarketTask().getMarket().getName(), evaluation.getMarketTask().getDeadline(), -evaluation.getScore());
                 score += evaluation.getScore();
             } else if(evaluation.getStatus() == 3){
                 System.out.printf("超过20天未完成\"%s 截止日期: %tF\"监管任务, 扣%d分\n",
-                        evaluation.getMarketTask().getMarket().getName(), evaluation.getMarketTask().getDeadline(), evaluation.getScore());
+                        evaluation.getMarketTask().getMarket().getName(), evaluation.getMarketTask().getDeadline(), -evaluation.getScore());
                 score += evaluation.getScore();
             }
         }

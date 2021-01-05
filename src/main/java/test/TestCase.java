@@ -2,21 +2,16 @@ package test;
 import bean.Product;
 import bean.executor.Expert;
 import bean.executor.Market;
-import mockit.Expectations;
+import dao.DataBaseDao;
 import mockit.Mock;
 import mockit.MockUp;
-import mockit.Mocked;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import service.ExecutorService;
 import service.IndicatorService;
 import service.RegulatorService;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Locale;
-
 
 /**
  * @author: YXH
@@ -24,6 +19,7 @@ import java.util.Locale;
  * @time: 13:48
  */
 public class TestCase {
+    private DataBaseDao dataBaseDao;
     private RegulatorService regulatorService;
     private ExecutorService executorService;
     private IndicatorService indicatorService;
@@ -36,14 +32,15 @@ public class TestCase {
     @Before
     public void setUp(){
         System.out.println("Before");
+        dataBaseDao = new DataBaseDao();
         regulatorService = new RegulatorService();
         indicatorService = new IndicatorService(regulatorService);
         executorService = new ExecutorService();
-        marketA = new Market("农贸市场A");
-        marketB = new Market("农贸市场B");
-        marketC = new Market("农贸市场C");
-        productA = new Product("水产品");
-        productB = new Product("禽肉产品");
+        marketA = dataBaseDao.selectMarketByName("农贸市场A");
+        marketB = dataBaseDao.selectMarketByName("农贸市场B");
+        marketC = dataBaseDao.selectMarketByName("农贸市场C");
+        productA = dataBaseDao.selectProductByName("水产品");
+        productB = dataBaseDao.selectProductByName("禽肉产品");
     }
 
     @Test
@@ -60,7 +57,6 @@ public class TestCase {
         executorService.executeTask(marketA,marketA,productA);
         executorService.executeTask(marketA,marketA,productB);
         executorService.checkTasks(marketA);
-
         executorService.checkTasks(marketB);
     }
 
@@ -74,7 +70,7 @@ public class TestCase {
                 "张三"
         );
         regulatorService.notifyExecutor(executorService);
-        Expert expert = new Expert("张三");
+        Expert expert = dataBaseDao.selectExpertByName("张三");
         executorService.checkTasks(expert);
         executorService.executeTask(expert, marketA, productA);
         executorService.executeTask(expert, marketB, productB);
@@ -106,7 +102,7 @@ public class TestCase {
                 "张三"
         );
         regulatorService.notifyExecutor(executorService);
-        Expert expert = new Expert("张三");
+        Expert expert = dataBaseDao.selectExpertByName("张三");
         executorService.executeTask(expert, marketA, productA);
         indicatorService.update();
         regulatorService.checkEvaluation(expert);

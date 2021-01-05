@@ -1,15 +1,19 @@
 package mapper;
 
 import bean.executor.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Component;
+import annotation.*;
 
-@Component
 public interface ExpertMapper {
-    @Select("select * from expert where name = #{name}")
-    Expert selectExpertByName(String name);
+    @OrmSelect("select * from expert where name = #{name}")
+    Expert selectExpertByName(@OrmParam("name") String name);
 
-    @Insert("insert into expert(name) values (#{name})")
-    int insertExpert(Expert expert);
+    @OrmSelect("select * from expert where id = #{id}")
+    Expert selectExpertById(@OrmParam("id") int id);
+
+    @OrmInsert("insert into expert(name) values(#{name})")
+    int insertExpert(@OrmParam(value = "name") String name);
+
+    @OrmDelete("delete from expert where id=#{id}")
+    int deleteExpert(@OrmParam(value="id")int id);
+
 }
